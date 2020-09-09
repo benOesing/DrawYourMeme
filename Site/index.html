@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="From Keklords for keklords">
+  <meta name="author" content="Prince Kek">
+
+  <title>Draw Your Meme</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+  <link href="css/custom.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">DyM 0.1</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+        <h1 class="my-4">Menu</h1>
+
+        <!-- Page Content 
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Category 1</a>
+            <a href="#" class="list-group-item">Category 2</a>
+            <a href="#" class="list-group-item">Category 3</a>
+          </div>
+               -->   
+        <form id="dataForm">
+          <div>
+            <input type="file" accept="image/*" id="uploadFile" name="upload" onchange="showImage(this);">
+          </div>
+          <p></p>
+          <div id="border-buttons" class="btn-group" data-toggle="buttons">
+            <label id="noborder" class="btn btn-primary active mr-2"  onclick="$('#border-size').hide();">  
+			<input type="radio" autocomplete="off" name="a2" value="0" checked> No Border
+			</label>
+            <label class="btn btn-primary" onclick="$('#border-size').show();">    
+			<input type="radio" autocomplete="off" name="a2" value="1"> With Border
+              			</label>
+          </div>
+          <p></p>
+          <div>
+            <input style="display: none;" id="border-size" class="form-control" name="a1" type="number" min="0" placeholder="Border size (px)" min="0" max="999">
+          </div>
+          <p></p>
+            <select id="mode" name="a3" class="form-control">
+			          <option value="0">Fade-In</option>
+			          <option  value="1">Up</option>
+			          <option  value="2">Right</option>
+			<option  value="3">Down</option>
+			<option  value="4">Left</option>
+			<option value="5">Connected-Flood</option>
+			<option   value="6">Connected-Path</option>
+			<option   value="7">Circle-In</option>
+			<option   value="8">Circle-Out</option>
+			<option   value="90">Sinus</option>
+			<option   value="91">Cosinus</option>
+			<option   value="92">Tangens</option>
+			<option   value="93">Sawtooth</option>
+			<option   value="94">Triangular</option>
+       </select>
+          <p></p>
+          <div>
+            <input class="form-control" name="a4" type="number" placeholder="FPS" required>
+          </div>
+          <div>
+            <input class="form-control" name="a5" type="number" placeholder="Seconds" required>
+          </div>
+
+          <!-- </form>-->
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h3 class="card-title">Preview</h3>
+            <p class="card-text">
+              <div id="loading-pepe" class="loading-pepe m-2 center-block img-responsive" style="display:none;">
+                <img src="/Upload/img/pepe.gif" alt="loading"> </img>
+                        </div>
+             <div>
+            <img id="result" style="display:none;" src="#">
+          </div>
+          <input type="hidden" name="a7" id="newName" value="">
+          <div>
+            <p id="linkP" style="display:none;" class="mb-1"> Link: </p>
+            <input type="text" id="linkT" value="Link" style="display:none;" readonly>
+          </div>                <div>
+            <img class="img-responsive" id="preview" style="display: none; width: 49%; height: 49%;" src="#">
+       <img class="img-responsive" id="binarized" style="display: none; width: 49%; height: 49%;" src="#"></div>
+                    <div id="slider" style="display:none">  
+                      <h4 class="mt-1">Binary Threshold: </h4>
+                      <input class="mt-2" name="a6" type="range" defaultValue="128" step="1" min="1" max="255" oninput="$('#binarized').attr('src',binarize(this.value))">
+          </div>
+           <button type="submit" id="executeButton" class="btn btn-block btn-danger mt-3">Letse Go</button>
+              </form>
+            </p>
+          </div>
+        </div>
+        <!-- /.card 
+
+          <div class="card card-outline-secondary my-4">
+            <div class="card-header">
+              Product Reviews
+            </div>
+            <div class="card-body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <hr>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <hr>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+              <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+              <hr>
+              <a href="#" class="btn btn-success">Leave a Review</a>
+            </div>
+          </div>
+          -->
+        <!-- /.card -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Draw Your Meme 2018</p>
+    </div> -->
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/bootstrap/js/scripts.js"></script>
+</body>
+
+</html>
