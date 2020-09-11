@@ -15,15 +15,15 @@ from time import sleep
 from cmath import log
 
 def loadImage():  # You get it.
-    print "LoadImage"
+    print ("LoadImage")
     img = Image.open(inputPath)  # Load the image.
     return img
 
 def initVariables():
-    print "Init"
+    print ("Init")
     args = sys.argv[1:]
     global extraWidth, extraHeight, drawBoarder, style, fps, duration,colorThreshold, inputPath, outputPath, extraStartFrames,extraEndFrames,start_time
-    start_time = time.clock()
+    start_time = time.time()
     extraWidth = int(args[0])
     extraHeight = int(args[1])
     drawBoarder = (int(args[2]) == 1)
@@ -38,7 +38,7 @@ def initVariables():
     #print(str(extraWidth) + " "+ str(extraHeight) + " " + str(drawBoarder) + " " + str(style) + " " + str(fps) + " " + str(duration) + " " + str(colorThreshold) + " " + inputPath + " " + outputPath + " " + str(extraStartFrames) + " " + str(extraEndFrames))
     
 def binarize(img):  # Binary black/white.
-    print "Binarize"
+    print ("Binarize")
     gray = img.convert("L")  # Grayscale the image.
     bi = gray.point(lambda x: 0 if x < colorThreshold else 255, '1') 
     # Use the grayscale to turn it black/white.
@@ -46,15 +46,15 @@ def binarize(img):  # Binary black/white.
     return bi
 
 def addSpace(img, colorToAdd):  # Adds a boarder.
-    print "AddSpace"
+    print ("AddSpace")
     size = img.size  # Old size size[0]/size[1].
     new_size = (size[0] + extraWidth, size[1] + extraHeight)  # Add boarder to size.
     bigImg = Image.new("L", new_size, colorToAdd)  # Create a blank image in the given color.
-    bigImg.paste(img, (extraWidth / 2, extraHeight / 2))  # Add the original image.
+    bigImg.paste(img, (int(extraWidth / 2), int(extraHeight / 2)))  # Add the original image.
     return bigImg
 
 def getSetPixels(img):  # Gets all set(black) pixels.
-    print "GetSetPixels"
+    print ("GetSetPixels")
     size = img.size  # Get size of image size[0]/size[1].
     listOfPixels = []  # Empty List.
     for x in range(0, size[0] * size[1]):  # For every pixel of the image.
@@ -64,7 +64,7 @@ def getSetPixels(img):  # Gets all set(black) pixels.
     return listOfPixels
 
 def orderSequence(listOfPixels, size, startPoint):
-    print "OrderSequence"
+    print ("OrderSequence")
     mid = (size[0] / 2, size[1] / 2)
     if(style == 0):  # Random fade in.
         shuffle(listOfPixels)
@@ -227,22 +227,22 @@ def orderSequence(listOfPixels, size, startPoint):
             percentageOfFail = float(len(listOfPixels)) / (size[0] * size[1])
             roundedPercentageOfFail = (round(percentageOfFail, int(floor(abs(log10(percentageOfFail)))) + 1) * 100)
             out.extend(listOfPixels)
-            print "Error:", str(roundedPercentageOfFail) + "%"
+            print ("Error:", str(roundedPercentageOfFail) + "%")
         #saveSequence(out, style, size)
         return out
     else:
-        print "Only 0-8 and [90-94] are valid styles."
+        print ("Only 0-8 and [90-94] are valid styles.")
         quit()
         
 def saveSequence(sequence, style, size):
-    print "saveSequence"
+    print ("saveSequence")
     newPath = os.path.dirname(outputPath)
-    print newPath + " This is the new path it should be .../public/DyM/"
+    print ("New Path: " + newPath)
     fileName = str(style)+ "_" + str(size[0]) + "x" + str(size[1]) + ".p"
     marshal.dump(sequence, open(newPath + "/Precalculated/" + fileName, "wb"))
     obj = marshal.load(open(newPath + "Precalculated/" + fileName, 'rb'))
     if sequence != obj:
-        print "Saving didnt work, delete ", newPath + "/Precalculated/" + fileName
+        print ("Saving didnt work, delete ", newPath + "/Precalculated/" + fileName)
         os.remove(newPath + "/Precalculated/" + fileName);
              
 def circleCompare(p1, p2, mid):
@@ -279,35 +279,35 @@ def createDirectory():
             raise  
      
 def drawImages(listOfPixels, size):
-    print "DrawImages"
+    print ("DrawImages")
     outList = []  # Empty list.
     out = Image.new("L", (size[0], size[1]), (255))  # Image that gets drawn.
     if(drawBoarder):
         out = addSpace(out, 0)
     for s in range(0,extraStartFrames):
         out.save(outputPath + str(s) + ".png")
-    pixelPerFrame = len(listOfPixels) / (fps * duration)  # Pixels that gets added per frame.
+    pixelPerFrame = int(len(listOfPixels) / (fps * duration))  # Pixels that gets added per frame.
     for x in range(0, fps * duration):
         for y in range(0, pixelPerFrame):
             pos = listOfPixels[x * pixelPerFrame + y]  # Position of black pixel.
             if(drawBoarder):
-                out.putpixel((pos[0]+extraWidth/2, pos[1]+extraHeight/2), 0)  # Draw a pixel with offset.
+                out.putpixel((int(pos[0]+extraWidth/2), int(pos[1]+extraHeight/2)), 0)  # Draw a pixel with offset.
             else:
-                out.putpixel((pos[0], pos[1]), 0)  # Draw a pixel.
+                out.putpixel((int(pos[0]), int(pos[1])), 0)  # Draw a pixel.
         out.save(outputPath + str(x + extraStartFrames) + ".png")  # Save the file.
     for e in range(0,extraEndFrames):
         out.save(outputPath + str(fps*duration+ e + extraStartFrames) + ".png")
     return outList
 
 def createGif():  # Create Gif from images.
-    print "CreateGif"
+    print ("CreateGif")
     images = []  # Empty list.
     for i in range(0, fps * duration + extraStartFrames + extraEndFrames):  # For every saved image
         images.append(imageio.imread(outputPath + str(i) + ".png"))  # Load all images.
     imageio.mimsave(outputPath + "out.gif", images)  # Create Gif.
   
 def moveFile():
-    print "MoveFile"
+    print ("MoveFile")
     fileName = os.path.basename(outputPath)
     if not os.path.isfile("dankmemes/"+fileName+".gif"):
         os.rename(outputPath+"out.gif", "dankmemes/"+fileName+".gif")
@@ -316,7 +316,7 @@ def moveFile():
         os.rename(outputPath+"out.gif", "dankmemes/"+fileName+".gif") 
 
 def cleanUp():  # Delete Images.
-    print "CleanUp"
+    print ("CleanUp")
     for i in range(0, fps * duration + extraStartFrames + extraEndFrames):  # For every saved image
         os.remove(outputPath + str(i) +".png")
     os.rmdir(outputPath)
@@ -332,7 +332,7 @@ def main():  # Shit gets done:
     createGif()
     moveFile()
     cleanUp()
-    print time.clock() - start_time, "seconds"
+    print (time.time() - start_time, "seconds")
 
 # Start of Script: 
 # Start main
