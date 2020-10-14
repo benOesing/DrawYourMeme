@@ -4,7 +4,7 @@ $arg1 = $_GET['a1']; // Name
 $arg1 = preg_replace('/_.*/','',$arg1);
 $arg1 = basename($arg1);
 
-$target_dir = "/srv/users/maximeme/apps/drawyourmeme/public/Upload/";
+$target_dir = "Upload/";
 $target_file = $target_dir . basename($_FILES["file"]["name"]);
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);

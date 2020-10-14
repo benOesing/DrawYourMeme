@@ -14,7 +14,7 @@ $arg7_folder = preg_replace('/[^A-Za-z0-9_]/','',$arg7);
 $parseError = "";
 $run = 1;
 
-if($run == 1 && file_exists("/srv/users/maximeme/apps/drawyourmeme/public/Dankmemes/" . $arg7_folder . ".gif")){
+if($run == 1 && file_exists("Dankmemes/" . $arg7_folder . ".gif")){
 	$run = 0;
 	$parseError .= "File already exists";
 }
@@ -56,8 +56,8 @@ if($run == 1 && !preg_match("/^.{20}$/",$arg7_new)){
 }
 
 //Run
-if($run == 0){ // <--- Deactivated the program
-exec("/srv/users/maximeme/apps/drawyourmeme/public/DyM/PyMeme.py " .escapeshellarg($arg1)." " .escapeshellarg($arg1)." " .escapeshellarg($arg2)." " .escapeshellarg($arg3)." " .escapeshellarg($arg4)." " .escapeshellarg($arg5)." " .escapeshellarg($arg6) ." /srv/users/maximeme/apps/drawyourmeme/public/Upload/" .escapeshellarg($arg7_new).".png /srv/users/maximeme/apps/drawyourmeme/public/DyM/SaveSpace/" .escapeshellarg($arg7)." 2>&1",$output);
+if($run == 1){
+exec("python PyMeme.py " .escapeshellarg($arg1)." " .escapeshellarg($arg1)." " .escapeshellarg($arg2)." " .escapeshellarg($arg3)." " .escapeshellarg($arg4)." " .escapeshellarg($arg5)." " .escapeshellarg($arg6) ." Upload/" .escapeshellarg($arg7_new).".png SaveSpace/" .escapeshellarg($arg7)." 2>&1",$output);
 } else{
 $output = [];
 }
